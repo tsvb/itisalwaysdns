@@ -1,0 +1,52 @@
+name: iiadns
+options:
+  bundleIdPrefix: com.timvbs
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    # Swift 5 language mode for the UI glue (smooth SwiftUI/Observation interop);
+    # DNSKit itself is compiled in strict Swift 6 mode.
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_HARDENED_RUNTIME: YES
+    DEVELOPMENT_TEAM: ""
+
+packages:
+  DNSKit:
+    path: ../../packages/DNSKit
+
+targets:
+  iiadns:
+    type: application
+    platform: macOS
+    sources:
+      - path: iiadns
+    dependencies:
+      - package: DNSKit
+        product: DNSKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.timvbs.iiadns
+        GENERATE_INFOPLIST_FILE: NO
+        COMBINE_HIDPI_IMAGES: YES
+    info:
+      path: iiadns/Info.plist
+      properties:
+        CFBundleDisplayName: iiadns
+        CFBundleShortVersionString: "0.1.0"
+        LSMinimumSystemVersion: "26.0"
+        LSApplicationCategoryType: public.app-category.developer-tools
+        # Required on macOS 26: querying the system resolver or a router at an
+        # RFC1918 address triggers the local-network privacy prompt.
+        NSLocalNetworkUsageDescription: "iiadns queries DNS resolvers on your local network to diagnose name resolution and detect leaks."
+    entitlements:
+      path: iiadns/iiadns.entitlements
+      properties:
+        # Developer ID distribution — not sandboxed, so the tool gets full
+        # low-level networking. Hardened Runtime is still on (for notarization).
+        com.apple.security.app-sandbox: false
+        com.apple.security.network.client: true
