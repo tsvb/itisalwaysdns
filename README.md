@@ -113,3 +113,5 @@ authoritative server, run it dual-stack, and put per-source rate limiting in fro
 - Local-network permission handling for system-resolver queries (incl. the macOS 26 reboot bug).
 - ASN/geo enrichment (MaxMind GeoLite2) in `leakd`.
 - Encrypted transports (DoH/DoT/DoQ) and `dig +trace` in the engine.
+
+Made by [Tim VanBenschoten](https://timvanbenschoten.com).
